@@ -23,7 +23,7 @@ jobs:
         uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: 'projects/21973407260/locations/global/workloadIdentityPools/githubactions/providers/my-pool'
-          service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+          service_account: 'devops-interview@gcp-devops-376307.iam.gserviceaccount.com'
       
       - name: Build Docker image
         uses: docker/build-push-action@v2
