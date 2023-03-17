@@ -34,14 +34,10 @@ jobs:
           push: false
           tags: ${{ env.PROJECT_ID }}/hello-world-app:latest
           
-      - uses: 'docker/login-action@v1'
+      - name: Authenticate with GCR
+        uses: GoogleCloudPlatform/docker-credential-gcr@master
         with:
-          registry: 'gcr.io'
-          username: 'oauth2accesstoken'
-          password: '${{ steps.auth.outputs.access_token }}'
-      # This example runs "docker login" directly to Container Registry.
-      - run: |-
-          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+          service-account-key: ${{ env.SERVICE_ACCOUNT_KEY }}
           
       - name: Push Docker image to GCR
         run: |
