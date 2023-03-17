@@ -18,12 +18,12 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Configure GCP credentials
-        uses: google-github-actions/setup-gcloud@main
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
         with:
-          project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ env.SERVICE_ACCOUNT_KEY }}
-          export_default_credentials: true
+          workload_identity_provider: 'projects/21973407260/locations/global/workloadIdentityPools/githubactions/providers/my-pool'
+          service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
       
       - name: Build Docker image
         uses: docker/build-push-action@v2
