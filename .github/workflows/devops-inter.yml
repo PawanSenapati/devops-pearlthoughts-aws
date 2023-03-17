@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_ID: gcp-devops-376307
-  SERVICE_ACCOUNT_KEY: ${{ secrets.0b441bc08a6033d905d103cac9e5930beb9f630a }}
+  SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
 
 jobs:
   deploy:
