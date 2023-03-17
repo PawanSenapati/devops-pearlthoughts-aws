@@ -37,7 +37,7 @@ jobs:
         with:
           registry: gcr.io
           username: _json_key
-          password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          password: ${{ env.SERVICE_ACCOUNT_KEY }}
       
       - name: Push Docker image to GCR
         run: |
