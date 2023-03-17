@@ -34,7 +34,7 @@ jobs:
       
       - name: Push Docker image to GCR
         run: |
-          docker tag ${{ env.PROJECT_ID }}/devops-inter:latest gcr.io/${{ env.PROJECT_ID }}/devops-inter:latest
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/devops-inter:latest .
           docker push gcr.io/${{ env.PROJECT_ID }}/devops-inter:latest
       
       - name: Deploy to Cloud Run
