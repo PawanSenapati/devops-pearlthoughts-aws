@@ -15,7 +15,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: devops-inter/checkout@v3
+        uses: devops-int/checkout@v3
       
       - name: Configure GCP credentials
         uses: google-github-actions/setup-gcloud@main
