@@ -23,7 +23,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@main
         with:
           project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ env.SERVICE_ACCOUNT_KEY }}
+          credentials_json: ${{ env.SERVICE_ACCOUNT_KEY }}
           export_default_credentials: true
           token_format: 'access_token'
       
