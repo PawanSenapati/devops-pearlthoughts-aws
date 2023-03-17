@@ -36,7 +36,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: gcr.io
-          service-account-key: ${{ env.SERVICE_ACCOUNT_KEY }}
+          username: _json_key
+          password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
       
       - name: Push Docker image to GCR
         run: |
