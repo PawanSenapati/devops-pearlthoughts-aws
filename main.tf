@@ -8,6 +8,13 @@ variable "image_tag" {
   type = string
 }
 
+terraform {
+ backend "gcs" {
+   bucket  = "devops-inter-state-file"
+   prefix  = "terraform/state"
+ }
+}
+
 resource "google_cloud_run_service" "app_service" {
   name     = "devops-interview"
   location = "us-central1"
