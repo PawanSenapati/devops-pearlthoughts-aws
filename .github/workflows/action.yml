@@ -22,7 +22,6 @@ jobs:
         name: Configure GCP credentials
         uses: google-github-actions/auth@v1
         with:
-          project_id: ${{ env.PROJECT_ID }}
           credentials_json: ${{ env.SERVICE_ACCOUNT_KEY }}
           token_format: 'access_token'
       
