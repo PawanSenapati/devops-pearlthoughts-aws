@@ -27,7 +27,7 @@ terraform {
 data "terraform_remote_state" "network" {
   backend = "s3"
   config = {
-    bucket = "terraform-state-prod"
+    bucket = "devops-interview-state"
     key    = "network/terraform.tfstate"
     region = "us-east-1"
   }
