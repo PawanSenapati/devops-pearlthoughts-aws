@@ -45,7 +45,7 @@ jobs:
           docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:latest .
           docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:latest
           
-      - name: Deploy to Cloud Run
+      - name: Deploy to AWS ECS
         run: |
           terraform init -input=true
           terraform plan -var="image_tag=${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:latest"
