@@ -33,7 +33,7 @@ jobs:
       - name: Check ECR authentication
         run: docker login -u AWS -p ${{ steps.ecr-login.outputs.password }} ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
         
-      - name: Log in to AWS ECR
+      - name: Log in to AWS ECR (Container Registry)
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registry: ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
