@@ -9,10 +9,9 @@ variable "image_tag" {
 }
 
 terraform {
- backend "remote" {
-   bucket  = "devops-inter-state-file"
-   prefix  = "terraform/state"
- }
+  backend "local" {
+    path = "terraform.tfstate"
+  }
 }
 
 resource "google_cloud_run_service" "app_service" {
