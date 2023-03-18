@@ -44,7 +44,7 @@ resource "aws_default_subnet" "ecs_subnet_a" {
 
 # Create a new subnet in the VPC for the ECS Fargate task
 resource "aws_default_subnet" "ecs_subnet_b" {
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-1b"
 }
 
 # Define the ECS task
