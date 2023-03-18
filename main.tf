@@ -9,7 +9,7 @@ variable "image_tag" {
 }
 
 terraform {
- backend "gcs" {
+ backend "remote" {
    bucket  = "devops-inter-state-file"
    prefix  = "terraform/state"
  }
