@@ -35,19 +35,6 @@ data "terraform_remote_state" "network" {
   }
 }
 
-resource "google_cloud_run_service" "app_service" {
-  name     = "devops-interview"
-  location = "us-central1"
-  
-  template {
-    spec {
-      containers {
-        image = "gcr.io/gcp-devops-376307/devops-inter:${var.image_tag}"
-      }
-    }
-  }
-}
-
 # Create a new VPC for the ECS Fargate task
 resource "aws_vpc" "ecs_vpc" {
   cidr_block = "10.0.0.0/16"
@@ -65,7 +52,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
   container_definitions    = jsonencode([
     {
       name      = "my-container"
-      image     = "nginx:latest"
+      image     = "${var.image_tag}"
       cpu       = 256
       memory    = 512
       portMappings = [
@@ -102,29 +89,20 @@ resource "aws_iam_role" "ecs_task_execution" {
   })
 }
 
-# Allow the task to read the ECR repository
-  # You can customize the permissions as needed
-  inline_policy {
-    name = "ecs-task-ecr-policy"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow",
-          Action = [
-            "ecr:GetAuthorizationToken",
-            "ecr:BatchCheckLayerAvailability",
-            "ecr:GetDownloadUrlForLayer",
-            "ecr:GetRepositoryPolicy",
-            "ecr:DescribeRepositories",
-            "ecr:ListImages",
-            "ecr:BatchGetImage"
-          ],
-          Resource = ["*"]
-        }
-      ]
-    })
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
   }
+}
+
+resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
+  role       = "${aws_iam_role.ecsTaskExecutionRole.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 # Define the ECS service
