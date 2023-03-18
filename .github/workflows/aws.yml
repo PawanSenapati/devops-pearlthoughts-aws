@@ -42,12 +42,12 @@ jobs:
 
       - name: Push Docker image to ECR
         run: |
-          docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${{ github.sha }} .
-          docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${{ github.sha }}
+          docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:latest .
+          docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:latest
           
       - name: Deploy to Cloud Run
         run: |
           terraform init -input=true
           terraform state list
-          terraform plan -var="image_tag=${{ github.sha }}"
-          terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
+          terraform plan -var="image_tag=latest"
+          terraform apply -var="image_tag=latest" -auto-approve
