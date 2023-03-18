@@ -42,8 +42,8 @@ jobs:
           
       - name: Push Docker image to ECR
         run: |
-          docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${{ github.sha }} .
-          docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${{ github.sha }}
+          docker build -t my-ecr-repo:${{ github.sha }} .
+          docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${{ github.sha }} --debug
           
       - name: Deploy to Cloud Run
         run: |
