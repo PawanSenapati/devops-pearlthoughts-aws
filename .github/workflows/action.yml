@@ -49,4 +49,3 @@ jobs:
         with:
           service: 'devops-interview'
           image: 'cr.io/${{ env.PROJECT_ID }}/devops-inter:${{ github.sha }}'
-          suffix: '${{ github.sha }}'
