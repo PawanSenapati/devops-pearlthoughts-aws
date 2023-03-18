@@ -4,7 +4,7 @@ provider "google" {
   zone    = "us-central1-a"
 }
 
-variable "image_id" {
+variable "image_tag" {
   type = string
 }
 
