@@ -11,7 +11,7 @@ resource "google_cloud_run_service" "app_service" {
   template {
     spec {
       containers {
-        image = "gcr.io/gcp-devops-376307/devops-init:v2.0"
+        image = "gcr.io/gcp-devops-376307/devops-inter:latest"
       }
     }
   }
