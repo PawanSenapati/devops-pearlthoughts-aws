@@ -22,7 +22,7 @@ jobs:
         name: Configure GCP credentials
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ env.SERVICE_ACCOUNT_KEY }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
           token_format: 'access_token'
       
       - name: Build Docker image
