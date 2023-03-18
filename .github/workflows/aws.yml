@@ -39,6 +39,11 @@ jobs:
           registry: ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
           username: AWS
           password: ${{ steps.ecr-login.outputs.password }}
+      - name: Create ECR repository
+        uses: aws-actions/create-ecr-repository@v1
+        with:
+          repository-name: my-ecr-repo
+          region: ${{env.AWS_REGION}}
           
       - name: Push Docker image to ECR
         run: |
