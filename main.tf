@@ -34,17 +34,17 @@ terraform {
 # }
 
 # Create a new VPC for the ECS Fargate task
-resource "aws_vpc" "ecs_vpc" {
+resource "aws_default_vpc" "ecs_vpc" {
 }
 
 # Create a new subnet in the VPC for the ECS Fargate task
-resource "aws_subnet" "ecs_subnet_a" {
+resource "aws_default_subnet" "ecs_subnet_a" {
   vpc_id     = aws_vpc.ecs_vpc.id
   availability_zone = "us-east-1a"
 }
 
 # Create a new subnet in the VPC for the ECS Fargate task
-resource "aws_subnet" "ecs_subnet_b" {
+resource "aws_default_subnet" "ecs_subnet_b" {
   vpc_id     = aws_vpc.ecs_vpc.id
   availability_zone = "us-east-1a"
 }
