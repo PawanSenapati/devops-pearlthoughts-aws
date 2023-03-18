@@ -9,9 +9,23 @@ variable "image_tag" {
 }
 
 terraform {
-  backend "local" {
-    path = "terraform.tfstate"
+ backend "gcs" {
+   bucket  = "devops-inter-state-file"
+   prefix  = "/"
+ }
+}
+data "terraform_remote_state" "foo" {
+  backend = "gcs"
+  config = {
+    bucket  = "devops-inter-state-file"
+    prefix  = "prod"
   }
+}
+
+# Terraform >= 0.12
+resource "local_file" "foo" {
+  content  = data.terraform_remote_state.foo.outputs.greeting
+  filename = "${path.module}/outputs.txt"
 }
 
 resource "google_cloud_run_service" "app_service" {
