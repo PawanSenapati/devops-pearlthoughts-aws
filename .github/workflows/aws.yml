@@ -26,12 +26,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ${{env.AWS_REGION}}
       
-      - name: Login to Amazon ECR
-        id: login-ecr
+      - name: Get ECR login password
+        id: ecr-login
+        run: echo "::set-output name=password::$(aws ecr get-login-password --region ${{env.AWS_REGION}})"
+
+      - name: Check ECR authentication
+        run: docker login -u AWS -p ${{ steps.ecr-login.outputs.password }} ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
+        
+      - name: Log in to AWS ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          registry-type: public
-
+          registry: ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
+          username: AWS
+          password: ${{ steps.ecr-login.outputs.password }}
+          
       - name: Push Docker image to ECR
         run: |
           docker build -t ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${{ github.sha }} .
