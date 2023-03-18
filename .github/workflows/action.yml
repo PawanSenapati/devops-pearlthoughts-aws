@@ -49,3 +49,4 @@ jobs:
           terraform init -input=true
           terraform state list
           terraform plan -var="image_tag=${{ github.sha }}"
+          terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
