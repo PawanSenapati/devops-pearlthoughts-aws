@@ -116,7 +116,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.ecs_task.arn
 
   network_configuration {
-    subnets = [aws_subnet.ecs_subnet.id]
+    subnets = [aws_subnet.ecs_subnet_a.id,aws_subnet.ecs_subnet_b.id]
   }
 
   depends_on = [
