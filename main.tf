@@ -24,14 +24,14 @@ terraform {
   }
 }
 
-data "terraform_remote_state" "network" {
-  backend = "s3"
-  config = {
-    bucket = "devops-interview-state"
-    key    = "network/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
+# data "terraform_remote_state" "network" {
+#   backend = "s3"
+#   config = {
+#     bucket = "devops-interview-state"
+#     key    = "network/terraform.tfstate"
+#     region = "us-east-1"
+#   }
+# }
 
 # Create a new VPC for the ECS Fargate task
 resource "aws_vpc" "ecs_vpc" {
