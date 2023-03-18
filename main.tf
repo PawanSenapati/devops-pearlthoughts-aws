@@ -39,13 +39,13 @@ resource "aws_default_vpc" "ecs_vpc" {
 
 # Create a new subnet in the VPC for the ECS Fargate task
 resource "aws_default_subnet" "ecs_subnet_a" {
-  vpc_id     = aws_vpc.ecs_vpc.id
+  vpc_id     = aws_default_vpc.ecs_vpc.id
   availability_zone = "us-east-1a"
 }
 
 # Create a new subnet in the VPC for the ECS Fargate task
 resource "aws_default_subnet" "ecs_subnet_b" {
-  vpc_id     = aws_vpc.ecs_vpc.id
+  vpc_id     = aws_default_vpc.ecs_vpc.id
   availability_zone = "us-east-1a"
 }
 
@@ -115,7 +115,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.ecs_task.arn
 
   network_configuration {
-    subnets = [aws_subnet.ecs_subnet_a.id,aws_subnet.ecs_subnet_b.id]
+    subnets = [aws_default_subnet.ecs_subnet_a.id,aws_default_subnet.ecs_subnet_b.id]
   }
 
   depends_on = [
@@ -132,8 +132,8 @@ resource "aws_alb" "application_load_balancer" {
   name               = "load-balancer-dev" #load balancer name
   load_balancer_type = "application"
   subnets = [ # Referencing the default subnets
-    "${aws_subnet.ecs_subnet_a.id}",
-    "${aws_subnet.ecs_subnet_b.id}"
+    "${aws_default_subnet.ecs_subnet_a.id}",
+    "${aws_default_subnet.ecs_subnet_b.id}"
   ]
   # security group
   security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
