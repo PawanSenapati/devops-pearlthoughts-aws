@@ -4,10 +4,6 @@ provider "google" {
   zone    = "us-central1-a"
 }
 
-variable "image_tag" {
-  type = string
-}
-
 resource "google_cloud_run_service" "app_service" {
   name     = "devops-interview"
   location = "us-central1"
