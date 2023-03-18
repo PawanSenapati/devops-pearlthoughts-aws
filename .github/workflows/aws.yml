@@ -42,7 +42,7 @@ jobs:
           
       - name: Push Docker image to ECR
         run: |
-          docker build -t hello-world .
+          docker build -t hello-world:${{ github.sha }} .
           docker tag hello-world:${{ github.sha }} ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo
           docker push ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo
           
