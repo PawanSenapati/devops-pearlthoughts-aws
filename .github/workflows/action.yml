@@ -47,5 +47,6 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           terraform init
+          terraform import google_cloud_run_service.app_service "devops-interview"
           terraform plan -var="image_tag=${{ github.sha }}"
           terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
