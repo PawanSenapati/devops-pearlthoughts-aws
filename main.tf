@@ -21,7 +21,7 @@ variable "image_tag" {
 terraform {
   backend "s3" {
     bucket = "devops-interview-state"
-    key    = "/"
+    key    = ""
     region = "us-east-1"
   }
 }
