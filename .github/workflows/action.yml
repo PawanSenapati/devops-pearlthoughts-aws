@@ -48,4 +48,4 @@ jobs:
         run: |
           terraform init
           terraform plan
-          terraform apply -var="image_tag=$IMAGE_TAG" -auto-approve
+          terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
