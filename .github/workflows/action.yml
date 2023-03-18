@@ -45,8 +45,7 @@ jobs:
           docker push gcr.io/${{ env.PROJECT_ID }}/devops-inter:${{ github.sha }}
       
       - name: Deploy to Cloud Run
-        uses: 'google-github-actions/deploy-cloudrun@v1'
-        with:
-          service: 'devops-interview'
-          image: 'gcr.io/${{ env.PROJECT_ID }}/devops-inter:${{ github.sha }}'
-          suffix: '${{ github.sha }}'
+        run: |
+          terraform init -input=true 
+          terraform plan -var="image_tag=${{ github.sha }}"
+          terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
