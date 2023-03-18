@@ -46,6 +46,5 @@ jobs:
       
       - name: Deploy to Cloud Run
         run: |
-          terraform init -input=true 
-          terraform plan -var="image_tag=${{ github.sha }}"
-          terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
+          terraform init -input=true
+          terraform state list
