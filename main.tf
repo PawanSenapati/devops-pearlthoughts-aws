@@ -22,12 +22,6 @@ data "terraform_remote_state" "foo" {
   }
 }
 
-# Terraform >= 0.12
-resource "local_file" "foo" {
-  content  = data.terraform_remote_state.foo.outputs.greeting
-  filename = "${path.module}/outputs.txt"
-}
-
 resource "google_cloud_run_service" "app_service" {
   name     = "devops-interview"
   location = "us-central1"
