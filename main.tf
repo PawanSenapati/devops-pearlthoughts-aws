@@ -110,7 +110,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 # Define the ECS service
 resource "aws_ecs_service" "app_service" {
   name            = "app-first-service"     # Name the service
-  cluster         = "${aws_ecs_cluster.my-ecs-cluster.id}"   # Reference the created Cluster
+  cluster         = "${aws_ecs_cluster.ecs_cluster.id}"   # Reference the created Cluster
   task_definition = "${aws_ecs_task_definition.ecs_task.arn}" # Reference the task that the service will spin up
   launch_type     = "FARGATE"
   desired_count   = 2 # Set up the number of containers to 3
