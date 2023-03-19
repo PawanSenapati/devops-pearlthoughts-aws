@@ -59,9 +59,8 @@ resource "aws_ecs_task_definition" "ecs_task" {
       memory    = 512
       portMappings = [
         {
-          containerPort = 80
-          hostPort      = 80
-          protocol      = "tcp"
+          containerPort = 5000
+          hostPort      = 5000
         }
       ]
     }
