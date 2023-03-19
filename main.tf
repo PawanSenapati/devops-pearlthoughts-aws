@@ -50,7 +50,8 @@ resource "aws_default_subnet" "ecs_subnet_b" {
 # Define the ECS task
 resource "aws_ecs_task_definition" "ecs_task" {
   family                   = "my-ecs-task"
-  container_definitions    = jsonencode([
+  container_definitions    = <<DEFINITION
+  [
     {
       name      = "my-container"
       image     = "${var.image_tag}"
@@ -64,7 +65,8 @@ resource "aws_ecs_task_definition" "ecs_task" {
         }
       ]
     }
-  ])
+  ]
+  DEFINITION
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
