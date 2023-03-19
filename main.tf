@@ -50,7 +50,7 @@ resource "aws_default_subnet" "ecs_subnet_b" {
 # Define the ECS task
 resource "aws_ecs_task_definition" "ecs_task" {
   family                   = "my-ecs-task"
-  container_definitions    = <<DEFINITION
+  container_definitions    = jsonencode(
   [
     {
       name      = "my-container"
@@ -65,8 +65,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
         }
       ]
     }
-  ]
-  DEFINITION
+  ])
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
@@ -109,18 +108,24 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 # Define the ECS service
-resource "aws_ecs_service" "ecs_service" {
-  name            = "my-ecs-service"
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task.arn
+resource "aws_ecs_service" "app_service" {
+  name            = "app-first-service"     # Name the service
+  cluster         = "${aws_ecs_cluster.my-ecs-cluster.id}"   # Reference the created Cluster
+  task_definition = "${aws_ecs_task_definition.ecs_task.arn}" # Reference the task that the service will spin up
+  launch_type     = "FARGATE"
+  desired_count   = 2 # Set up the number of containers to 3
 
-  network_configuration {
-    subnets = [aws_default_subnet.ecs_subnet_a.id,aws_default_subnet.ecs_subnet_b.id]
+  load_balancer {
+    target_group_arn = "${aws_lb_target_group.target_group.arn}" # Reference the target group
+    container_name   = "${aws_ecs_task_definition.ecs_task.family}"
+    container_port   = 5000 # Specify the container port
   }
 
-  depends_on = [
-    aws_ecs_task_definition.ecs_task,
-  ]
+  network_configuration {
+    subnets          = ["${aws_default_subnet.ecs_subnet_a.id}", "${aws_default_subnet.ecs_subnet_b.id}"]
+    assign_public_ip = true     # Provide the containers with public IPs
+    security_groups  = ["${aws_security_group.load_balancer_security_group.id}"] # Set up the security group
+  }
 }
 
 # Define the ECS cluster
@@ -152,5 +157,23 @@ resource "aws_security_group" "load_balancer_security_group" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_lb_target_group" "target_group" {
+  name        = "target-group"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = "${aws_default_vpc.default_vpc.id}" # default VPC
+}
+
+resource "aws_lb_listener" "listener" {
+  load_balancer_arn = "${aws_alb.application_load_balancer.arn}" #  load balancer
+  port              = "80"
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.target_group.arn}" # target group
   }
 }
