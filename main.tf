@@ -123,7 +123,7 @@ resource "aws_ecs_service" "app_service" {
   network_configuration {
     subnets          = ["${aws_default_subnet.ecs_subnet_a.id}", "${aws_default_subnet.ecs_subnet_b.id}"]
     assign_public_ip = true     # Provide the containers with public IPs
-    security_groups  = ["${aws_security_group.load_balancer_security_group.id}"] # Set up the security group
+    security_groups  = ["${aws_security_group.service_security_group.id}"] # Set up the security group
   }
 }
 
@@ -143,12 +143,29 @@ resource "aws_alb" "application_load_balancer" {
   security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
 }
 
-resource "aws_security_group" "load_balancer_security_group" {
+resource "aws_security_group" "service_security_group" {
   ingress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Create a security group for the load balancer:
+resource "aws_security_group" "load_balancer_security_group" {
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow traffic in from all sources
   }
 
   egress {
