@@ -54,7 +54,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
   [
     {
       name      = "my-container"
-      image     = "${var.image_tag}"
+      image     = "${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/my-ecr-repo:${var.image_tag}"
       cpu       = 256
       memory    = 512
       portMappings = [
