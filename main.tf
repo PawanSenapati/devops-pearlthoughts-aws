@@ -145,10 +145,10 @@ resource "aws_alb" "application_load_balancer" {
 
 resource "aws_security_group" "load_balancer_security_group" {
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 0
+    to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"] # Allow traffic in from all sources
+    security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
   }
 
   egress {
@@ -175,4 +175,8 @@ resource "aws_lb_listener" "listener" {
     type             = "forward"
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # target group
   }
+}
+
+output "app_url" {
+  value = aws_alb.application_load_balancer.dns_name
 }
