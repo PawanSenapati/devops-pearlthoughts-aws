@@ -5,7 +5,7 @@ var express = require('express');
 var app = express()
 
 app.get('/', function(req, res){
-  res.send('Hello World - From PearlThoughts (Pawan)');
+  res.send('Hello World - From PearlThoughts (Using AWS ECR, ECS and terraform)');
 });
 
 /* istanbul ignore next */
