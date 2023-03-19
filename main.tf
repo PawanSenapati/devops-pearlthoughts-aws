@@ -59,8 +59,8 @@ resource "aws_ecs_task_definition" "ecs_task" {
       memory    = 512
       portMappings = [
         {
-          containerPort = 5000
-          hostPort      = 5000
+          containerPort = 80
+          hostPort      = 80
         }
       ]
     }
@@ -117,7 +117,7 @@ resource "aws_ecs_service" "app_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Reference the target group
     container_name   = "my-container"
-    container_port   = 5000 # Specify the container port
+    container_port   = 80 # Specify the container port
   }
 
   network_configuration {
